@@ -1,0 +1,5 @@
+name: BBJumpPads
+version: 1.0
+main: com.beanblockz.jumppads.JumpPads
+author: sponges.io
+description: Jump pads plugin for beanblockz.com
