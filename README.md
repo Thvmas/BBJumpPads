@@ -10,6 +10,7 @@ Jump pads plugin for beanblockz.com
 
 # Permissions
 (Excluding command permissions that are listed above)
+
 | Node                       | Description                   |
 | -------------------------- | ----------------------------- |
 | bbjumppads.jumppads.use    | Allows the use of jump pads   |

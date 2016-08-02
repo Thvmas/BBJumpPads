@@ -15,12 +15,11 @@ public class JumpPads extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        loadMessages();
-
         // we can assume if the data folder exists the config does too
         if (!getDataFolder().exists()) {
             saveDefaultConfig();
         }
+        loadMessages();
 
         PluginCommand command = getCommand("bbjumppads");
         command.setExecutor(new CommandBus(this));
@@ -56,7 +55,7 @@ public class JumpPads extends JavaPlugin {
             String configValue = config.getString(configName);
             lang.setMessage(configValue);
         }
-        if (!updated) {
+        if (updated) {
             try {
                 messagesConfig.save();
             } catch (IOException e) {
