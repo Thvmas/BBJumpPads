@@ -5,6 +5,7 @@ import io.sponges.configutils.Config;
 import io.sponges.configutils.ConfigLoader;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -24,8 +25,15 @@ public class JumpPads extends JavaPlugin {
         PluginCommand command = getCommand("bbjumppads");
         command.setExecutor(new CommandBus(this));
         command.setAliases(Arrays.asList("jumppads", "jp"));
+
+        PluginManager pluginManager = getServer().getPluginManager();
+        pluginManager.registerEvents(new PlayerListener(this), this);
     }
 
+    /**
+     * Method to load/reload messages for the Lang enum.
+     * Public access because it is used in the ReloadCommand.
+     */
     public void loadMessages() {
         Config messagesConfig;
         try {

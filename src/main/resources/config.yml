@@ -1,7 +1,18 @@
+# BBJumpPads config
+# if "sound" or "effect" is not nessesary then remove the field, the plugin
+# will check if it exists before trying to send a sound or effect.
+
 # config for the jump pads
 jumppads:
-  material-id: 70
+  material-id: 72
   height: 2.5
   forward: 3
+  sound: ENTITY_ENDERDRAGON_FIREBALL_EXPLODE
+  effect: BOW_FIRE
+
+# config for trampolines
+trampolines:
+  material-id: 70
+  height: 4
   sound: ENTITY_ENDERDRAGON_FIREBALL_EXPLODE
   effect: BOW_FIRE

@@ -7,3 +7,12 @@ commands:
   bbjumppads:
     aliases: [jumppads, jp]
     description: Main command
+permissions:
+  bbjumppads.jumppads.use:
+    default: false
+  bbjumppads.trampolines.use:
+    default: false
+  bbjumppads.version:
+    default: false
+  bbjumppads.reload:
+    default: false

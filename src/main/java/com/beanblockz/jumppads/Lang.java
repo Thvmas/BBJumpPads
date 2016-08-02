@@ -8,13 +8,20 @@ import java.util.Map;
 
 public enum Lang {
 
+    // format
     PREFIX("&5[BBJumpPads]&f "),
 
+    // verbose
     INVALID_COMMAND("&cInvalid command!"),
     NO_PERMISSION("&cYou do not have permission to do that!"),
 
-    HELP("Command help:\n/"), // TODO help message
-    RELOADED("Reloaded plugin!")
+    // command
+    HELP("Command help:" +
+            "\nAliases: /jumppads, /jp" +
+            "\n/jp - shows this message" +
+            "\n/jp version - shows the current plugin version" +
+            "\n/jp reload - reloads the messages config"),
+    RELOADED("Reloaded plugin!"),
 
     ;
 

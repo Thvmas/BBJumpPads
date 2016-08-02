@@ -5,6 +5,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
+/*
+Command to display the current plugin version
+ */
 public class VersionCommand extends SubCommand {
 
     private final String message;
