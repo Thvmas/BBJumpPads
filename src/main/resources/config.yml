@@ -1,0 +1,7 @@
+# config for the jump pads
+jumppads:
+  material-id: 70
+  height: 2.5
+  forward: 3
+  sound: ENTITY_ENDERDRAGON_FIREBALL_EXPLODE
+  effect: BOW_FIRE
