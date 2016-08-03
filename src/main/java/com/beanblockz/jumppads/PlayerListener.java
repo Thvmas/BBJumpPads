@@ -76,7 +76,7 @@ public class PlayerListener implements Listener {
                 return;
             }
             Vector direction = location.getDirection();
-            player.setVelocity(direction.setY(trampHeight));
+            player.setVelocity(direction.setY(trampHeight).setX(0).setZ(0));
             if (trampSound != null) player.playSound(location, trampSound, 100, 100);
             if (trampEffect != null) player.playEffect(location, trampEffect, 4);
         }
