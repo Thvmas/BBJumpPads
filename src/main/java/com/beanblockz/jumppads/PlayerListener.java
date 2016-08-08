@@ -1,5 +1,7 @@
 package com.beanblockz.jumppads;
 
+import me.konsolas.aac.api.HackType;
+import me.konsolas.aac.api.PlayerViolationEvent;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -13,10 +15,16 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 public class PlayerListener implements Listener {
 
     private static final String PAD_USE_PERMISSION = "bbjumppads.jumppads.use";
     private static final String TRAMP_USE_PERMISSION = "bbjumppads.trampolines.use";
+
+    private final Map<UUID, Long> jumping = new HashMap<>();
 
     private final int padsMaterialId;
     private final double padsHeight;
@@ -28,6 +36,8 @@ public class PlayerListener implements Listener {
     private final double trampHeight;
     private final Sound trampSound;
     private final Effect trampEffect;
+
+    private final long speedTimeAllocation;
 
     public PlayerListener(Plugin plugin) {
         FileConfiguration configuration = plugin.getConfig();
@@ -54,6 +64,10 @@ public class PlayerListener implements Listener {
         if (trampSection.contains("effect")) {
             this.trampEffect = Effect.valueOf(trampSection.getString("effect"));
         } else this.trampEffect = null;
+
+        // violations
+        ConfigurationSection violationsSection = configuration.getConfigurationSection("violations");
+        this.speedTimeAllocation = violationsSection.getInt("speed-time-allocation");
     }
 
     @SuppressWarnings("deprecation")
@@ -71,6 +85,7 @@ public class PlayerListener implements Listener {
             player.setVelocity(direction.setY(padsHeight).multiply(padsForward));
             if (padsSound != null) player.playSound(location, padsSound, 100, 100);
             if (padsEffect != null) player.playEffect(location, padsEffect, 4);
+            jumping.put(player.getUniqueId(), System.currentTimeMillis());
         } else if (typeId == trampMaterialId) {
             if (!player.hasPermission(TRAMP_USE_PERMISSION)) {
                 return;
@@ -79,6 +94,25 @@ public class PlayerListener implements Listener {
             player.setVelocity(direction.setY(trampHeight).setX(0).setZ(0));
             if (trampSound != null) player.playSound(location, trampSound, 100, 100);
             if (trampEffect != null) player.playEffect(location, trampEffect, 4);
+        }
+    }
+
+    @EventHandler
+    public void onViolation(PlayerViolationEvent event) {
+        HackType type = event.getHackType();
+        if (type != HackType.SPEED) {
+            return;
+        }
+        Player player = event.getPlayer();
+        UUID uuid = player.getUniqueId();
+        if (!jumping.containsKey(uuid)) {
+            return;
+        }
+        long stored = jumping.get(uuid);
+        if (System.currentTimeMillis() - stored < speedTimeAllocation) {
+            event.setCancelled(true);
+        } else {
+            jumping.remove(uuid);
         }
     }
 

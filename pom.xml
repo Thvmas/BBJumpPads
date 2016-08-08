@@ -6,7 +6,7 @@
 
     <groupId>com.beanblockz</groupId>
     <artifactId>jumppads</artifactId>
-    <version>1.01</version>
+    <version>1.02</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,12 +32,19 @@
             <version>1.10-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <!-- it works lolxd -->
         <dependency>
             <groupId>com.github.sponges</groupId>
             <artifactId>configutils</artifactId>
             <version>1.01-SNAPSHOT</version>
             <scope>compile</scope>
+        </dependency>
+        <!-- aac path -->
+        <dependency>
+            <groupId>me.konsolas</groupId>
+            <artifactId>aac</artifactId>
+            <version>LATEST</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/AAC.jar</systemPath>
         </dependency>
     </dependencies>
 
@@ -45,6 +52,7 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <filtering>true</filtering>
             </resource>
         </resources>
         <plugins>

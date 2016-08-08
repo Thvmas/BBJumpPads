@@ -16,3 +16,6 @@ trampolines:
   height: 4
   sound: ENTITY_ENDERDRAGON_FIREBALL_EXPLODE
   effect: BOW_FIRE
+
+violations:
+  speed-time-allocation: 1500
