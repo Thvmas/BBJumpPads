@@ -24,7 +24,8 @@ public class PlayerListener implements Listener {
     private static final String PAD_USE_PERMISSION = "bbjumppads.jumppads.use";
     private static final String TRAMP_USE_PERMISSION = "bbjumppads.trampolines.use";
 
-    private final Map<UUID, Long> jumping = new HashMap<>();
+    private final Map<UUID, Long> jumpSpeed = new HashMap<>();
+    private final Map<UUID, Long> jumpGlide = new HashMap<>();
 
     private final int padsMaterialId;
     private final double padsHeight;
@@ -38,6 +39,7 @@ public class PlayerListener implements Listener {
     private final Effect trampEffect;
 
     private final long speedTimeAllocation;
+    private final long glideTimeAllocation;
 
     public PlayerListener(Plugin plugin) {
         FileConfiguration configuration = plugin.getConfig();
@@ -68,6 +70,7 @@ public class PlayerListener implements Listener {
         // violations
         ConfigurationSection violationsSection = configuration.getConfigurationSection("violations");
         this.speedTimeAllocation = violationsSection.getInt("speed-time-allocation");
+        this.glideTimeAllocation = violationsSection.getInt("glide-time-allocation");
     }
 
     @SuppressWarnings("deprecation")
@@ -85,7 +88,10 @@ public class PlayerListener implements Listener {
             player.setVelocity(direction.setY(padsHeight).multiply(padsForward));
             if (padsSound != null) player.playSound(location, padsSound, 100, 100);
             if (padsEffect != null) player.playEffect(location, padsEffect, 4);
-            jumping.put(player.getUniqueId(), System.currentTimeMillis());
+            UUID uuid = player.getUniqueId();
+            long currentTime = System.currentTimeMillis();
+            jumpSpeed.put(uuid, currentTime);
+            jumpGlide.put(uuid, currentTime);
         } else if (typeId == trampMaterialId) {
             if (!player.hasPermission(TRAMP_USE_PERMISSION)) {
                 return;
@@ -100,19 +106,28 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onViolation(PlayerViolationEvent event) {
         HackType type = event.getHackType();
-        if (type != HackType.SPEED) {
-            return;
-        }
         Player player = event.getPlayer();
         UUID uuid = player.getUniqueId();
-        if (!jumping.containsKey(uuid)) {
-            return;
-        }
-        long stored = jumping.get(uuid);
-        if (System.currentTimeMillis() - stored < speedTimeAllocation) {
-            event.setCancelled(true);
-        } else {
-            jumping.remove(uuid);
+        if (type == HackType.SPEED) {
+            if (!jumpSpeed.containsKey(uuid)) {
+                return;
+            }
+            long stored = jumpSpeed.get(uuid);
+            if (System.currentTimeMillis() - stored < speedTimeAllocation) {
+                event.setCancelled(true);
+            } else {
+                jumpSpeed.remove(uuid);
+            }
+        } else if (type == HackType.GLIDE) {
+            if (!jumpGlide.containsKey(uuid)) {
+                return;
+            }
+            long stored = jumpGlide.get(uuid);
+            if (System.currentTimeMillis() - stored < glideTimeAllocation) {
+                event.setCancelled(true);
+            } else {
+                jumpGlide.remove(uuid);
+            }
         }
     }
 

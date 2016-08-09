@@ -19,3 +19,4 @@ trampolines:
 
 violations:
   speed-time-allocation: 1500
+  glide-time-allocation: 1500

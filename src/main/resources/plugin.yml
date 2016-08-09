@@ -2,6 +2,7 @@ name: BBJumpPads
 version: ${project.version}
 main: com.beanblockz.jumppads.JumpPads
 author: sponges.io
+depend: [AAC]
 description: Jump pads plugin for beanblockz.com
 commands:
   bbjumppads:
